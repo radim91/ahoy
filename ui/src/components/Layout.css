@@ -1,0 +1,4 @@
+body {
+    background-color: var(--bs-gray-800) !important;
+    color: white;
+}

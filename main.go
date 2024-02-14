@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-    "mime"
 	"radim91/entity"
 )
 

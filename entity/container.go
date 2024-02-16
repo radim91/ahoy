@@ -2,6 +2,7 @@ package entity
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/docker/docker/api/types"
 )

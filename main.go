@@ -8,90 +8,90 @@ import (
 )
 
 func projectsHandler(w http.ResponseWriter, r *http.Request) {
-    tmpl, err := template.New("").ParseFiles("templates/projects.html", "templates/base.html")
-    
-    if err != nil {
-        panic(err)
-    }
+	tmpl, err := template.New("").ParseFiles("templates/projects.html", "templates/base.html")
 
-    Projects := entity.GetProjects()
+	if err != nil {
+		panic(err)
+	}
 
-    tmpl.ExecuteTemplate(w, "base", Projects)
+	Projects := entity.GetProjects()
+
+	tmpl.ExecuteTemplate(w, "base", Projects)
 }
 
 func containersHandler(w http.ResponseWriter, r *http.Request) {
-    tmpl, err := template.New("").ParseFiles("templates/containers.html", "templates/base.html")
-    
-    if err != nil {
-        panic(err)
-    }
+	tmpl, err := template.New("").ParseFiles("templates/containers.html", "templates/base.html")
 
-    Containers := entity.GetContainers()
+	if err != nil {
+		panic(err)
+	}
 
-    tmpl.ExecuteTemplate(w, "base", Containers)
+	Containers := entity.GetContainers()
+
+	tmpl.ExecuteTemplate(w, "base", Containers)
 }
 
 func imagesHandler(w http.ResponseWriter, r *http.Request) {
-    tmpl, err := template.New("").ParseFiles("templates/images.html", "templates/base.html")
-    
-    if err != nil {
-        panic(err)
-    }
+	tmpl, err := template.New("").ParseFiles("templates/images.html", "templates/base.html")
 
-    Images := entity.GetImages()
+	if err != nil {
+		panic(err)
+	}
 
-    tmpl.ExecuteTemplate(w, "base", Images)
+	Images := entity.GetImages()
+
+	tmpl.ExecuteTemplate(w, "base", Images)
 }
 
 func networksHandler(w http.ResponseWriter, r *http.Request) {
-    tmpl, err := template.New("").ParseFiles("templates/networks.html", "templates/base.html")
-    
-    if err != nil {
-        panic(err)
-    }
+	tmpl, err := template.New("").ParseFiles("templates/networks.html", "templates/base.html")
 
-    Networks := entity.GetNetworks()
+	if err != nil {
+		panic(err)
+	}
 
-    tmpl.ExecuteTemplate(w, "base", Networks)
+	Networks := entity.GetNetworks()
+
+	tmpl.ExecuteTemplate(w, "base", Networks)
 }
 
 func volumesHandler(w http.ResponseWriter, r *http.Request) {
-    tmpl, err := template.New("").ParseFiles("templates/volumes.html", "templates/base.html")
-    
-    if err != nil {
-        panic(err)
-    }
+	tmpl, err := template.New("").ParseFiles("templates/volumes.html", "templates/base.html")
 
-    Volumes := entity.GetVolumes()
+	if err != nil {
+		panic(err)
+	}
 
-    tmpl.ExecuteTemplate(w, "base", Volumes)
+	Volumes := entity.GetVolumes()
+
+	tmpl.ExecuteTemplate(w, "base", Volumes)
 }
 
 func containerDetailHandler(w http.ResponseWriter, r *http.Request) {
-    tmpl, err := template.New("").ParseFiles("templates/container.html", "templates/base.html")
-    
-    fmt.Println(r.PathValue("id"))
-    if err != nil {
-        panic(err)
-    }
+	fmt.Println(r.PathValue("id"))
+	tmpl, err := template.New("").ParseFiles("templates/container.html", "templates/base.html")
 
-    Container := entity.GetContainer(r.PathValue("id"))
+	if err != nil {
+		panic(err)
+	}
 
-    tmpl.ExecuteTemplate(w, "base", Container)
+	Container := entity.GetContainer(r.PathValue("id"))
+
+	tmpl.ExecuteTemplate(w, "base", Container)
 }
 
 func main() {
-    mux := http.NewServeMux()
-    mux.HandleFunc("/", projectsHandler)
-    mux.HandleFunc("/projects", projectsHandler)
-    mux.HandleFunc("/containers", containersHandler)
-    mux.HandleFunc("/images", imagesHandler)
-    mux.HandleFunc("/networks", networksHandler)
-    mux.HandleFunc("/volumes", volumesHandler)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", projectsHandler)
+	mux.HandleFunc("/projects", projectsHandler)
+	mux.HandleFunc("/containers", containersHandler)
+	mux.HandleFunc("/images", imagesHandler)
+	mux.HandleFunc("/networks", networksHandler)
+	mux.HandleFunc("/volumes", volumesHandler)
 
-    mux.HandleFunc("/containers/{id}", containerDetailHandler)
+	mux.HandleFunc("/containers/{id}", containerDetailHandler)
 
-    mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
+	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
-    http.ListenAndServe(":8080", mux)
+	http.ListenAndServe(":8080", mux)
 }

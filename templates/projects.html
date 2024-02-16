@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/style.css">
-    <title>Ahoy | Projects</title>
-</head>
-<body>
-    <p>
-        {{range .}}
-            {{.Name}}
-        {{end}}
-    </p>
-</body>
-</html>
-
+{{define "content"}}
+<h2>Projects</h2>
+<p>
+    {{range .}}
+        {{.Name}}
+    {{end}}
+</p>
+{{end}}

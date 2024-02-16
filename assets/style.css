@@ -3,3 +3,21 @@ body {
     color: white;
     font-family: monospace;
 }
+.container {
+    display: flex;
+    padding: 20px;
+    flex-direction: row;
+}
+.content {
+    padding-left: 20px;
+}
+.menu {
+    min-width: 200px;
+
+    .item {
+        display: block;
+        width: 100%;
+        color: white;
+    }
+}
+

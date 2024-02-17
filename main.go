@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -68,7 +69,6 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func containerDetailHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.PathValue("id"))
 	tmpl, err := template.New("").ParseFiles("templates/container.html", "templates/base.html")
 
 	if err != nil {
@@ -78,6 +78,26 @@ func containerDetailHandler(w http.ResponseWriter, r *http.Request) {
 	Container := entity.GetContainer(r.PathValue("id"))
 
 	tmpl.ExecuteTemplate(w, "base", Container)
+}
+
+func containerLogsHandler(w http.ResponseWriter, r *http.Request) {
+    tmpl, err := template.New("").ParseFiles("templates/container-logs.html", "templates/base.html")
+
+    if err != nil {
+        panic(err)
+    }
+
+    Uri := "/api/container/logs/" + (r.PathValue("id"))
+
+    tmpl.ExecuteTemplate(w, "base", Uri)
+}
+
+func apiContainerLogsHandler(w http.ResponseWriter, r *http.Request) {
+    logs := entity.GetContainerLogs(r.PathValue("id"))
+    jsonData, _ := json.Marshal(logs)
+    fmt.Println(logs)
+
+    w.Write(jsonData)
 }
 
 func main() {
@@ -90,6 +110,10 @@ func main() {
 	mux.HandleFunc("/volumes", volumesHandler)
 
 	mux.HandleFunc("/containers/{id}", containerDetailHandler)
+	mux.HandleFunc("/containers/{id}/logs", containerLogsHandler)
+
+    //API
+    mux.HandleFunc("/api/container/logs/{id}", apiContainerLogsHandler)
 
 	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 

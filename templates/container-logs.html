@@ -1,0 +1,27 @@
+{{define "content"}}
+<h2>Container logs</h2>
+<div id="logs"></div>
+{{end}}
+
+{{define "scripts"}}
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const logs = document.getElementById("logs");
+
+        function fetchLogs() {
+            fetch({{.}})
+                .then(response => response.json())
+                .then(data => {
+                    mutData = data.replace("\n", "<br>");
+                    logs.innerHTML = mutData;
+                });
+        }
+
+        fetchLogs();
+
+        setInterval(function() {
+            fetchLogs();
+        }, 2000)
+    });
+</script>
+{{end}}

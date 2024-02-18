@@ -12,8 +12,14 @@
             fetch({{.}})
                 .then(response => response.json())
                 .then(data => {
-                    mutData = data.replace("\n", "<br>");
-                    logs.innerHTML = mutData;
+                    let html = '';
+
+                    data.forEach(log => {
+                        log = log.replace(/[\u{0080}-\u{10FFFF}]/gu, "");
+                        html += `<p>${log}</p>`;
+                    })
+
+                    logs.innerHTML = html;
                 });
         }
 

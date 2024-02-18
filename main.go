@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	/* "fmt" */
 	"html/template"
 	"net/http"
 	"radim91/entity"
@@ -95,7 +95,6 @@ func containerLogsHandler(w http.ResponseWriter, r *http.Request) {
 func apiContainerLogsHandler(w http.ResponseWriter, r *http.Request) {
     logs := entity.GetContainerLogs(r.PathValue("id"))
     jsonData, _ := json.Marshal(logs)
-    fmt.Println(logs)
 
     w.Write(jsonData)
 }

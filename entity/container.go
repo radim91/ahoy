@@ -1,8 +1,8 @@
 package entity
 
 import (
+	"bufio"
 	"context"
-	"io"
 
 	"github.com/docker/docker/api/types"
 )
@@ -29,22 +29,23 @@ func GetContainer(id string) (types.ContainerJSON) {
     return container
 }
 
-func GetContainerLogs(id string) (string) {
+func GetContainerLogs(id string) []string {
     client := GetClient()
     
-    logs, err := client.ContainerLogs(context.Background(), id, types.ContainerLogsOptions{
+    logs, _ := client.ContainerLogs(context.Background(), id, types.ContainerLogsOptions{
         ShowStdout: true,
         ShowStderr: true,
         Details: true,
+        Timestamps: true,
     })
-    if err != nil {
-        panic(err)
+
+    defer logs.Close()
+
+    var logsSlice []string
+    scanner := bufio.NewScanner(logs)
+    for scanner.Scan() {
+        logsSlice = append(logsSlice, scanner.Text())
     }
 
-    data, err := io.ReadAll(logs)
-    if err != nil {
-        panic(err)
-    }
-
-    return string(data)
+    return logsSlice
 }

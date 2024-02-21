@@ -51,3 +51,7 @@ func GetProjects() (map[string]Project) {
 
     return projects
 }
+
+func GetProject(name string) (Project) {
+    return GetProjects()[name]
+}

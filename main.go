@@ -98,6 +98,18 @@ func apiContainerLogsHandler(w http.ResponseWriter, r *http.Request) {
     w.Write(jsonData)
 }
 
+func projectDetailHandler(w http.ResponseWriter, r *http.Request) {
+    tmpl, err := template.New("").ParseFiles("templates/project.html", "templates/base.html")
+
+    if err != nil {
+        panic(err)
+    }
+
+    Project := entity.GetProject(r.PathValue("name"))
+
+    tmpl.ExecuteTemplate(w, "base", Project)
+}
+
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", projectsHandler)
@@ -109,6 +121,7 @@ func main() {
 
 	mux.HandleFunc("/containers/{id}", containerDetailHandler)
 	mux.HandleFunc("/containers/{id}/logs", containerLogsHandler)
+	mux.HandleFunc("/projects/{name}", projectDetailHandler)
 
     //API
     mux.HandleFunc("/api/container/logs/{id}", apiContainerLogsHandler)

@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	/* "fmt" */
 	"html/template"
 	"net/http"
 	"radim91/entity"

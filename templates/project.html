@@ -5,8 +5,21 @@
     Hash: {{.Hash}}<br/>
     File: {{.File}}<br/>
     Workdir: {{.Workdir}}<br/>
+    <button id="start">START</button><br/>
 </p>
 {{end}}
 
 {{define "scripts"}}
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const start = document.getElementById("start");
+        start.addEventListener("click", function(){
+            fetch("/api/project/start/{{.Name}}")
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+        });
+    });
+</script>
 {{end}}

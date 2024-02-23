@@ -110,6 +110,18 @@ func projectDetailHandler(w http.ResponseWriter, r *http.Request) {
     tmpl.ExecuteTemplate(w, "base", Project)
 }
 
+func apiProjectStartHandler(w http.ResponseWriter, r *http.Request) {
+    go entity.StartProject(entity.GetProject(r.PathValue("name")))
+
+    msg := map[string]string{
+        "message": "started",
+    }
+
+    jsonData, _ := json.Marshal(msg)
+
+    w.Write(jsonData)
+}
+
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", projectsHandler)
@@ -125,6 +137,7 @@ func main() {
 
     //API
     mux.HandleFunc("/api/container/logs/{id}", apiContainerLogsHandler)
+	mux.HandleFunc("/api/project/start/{name}", apiProjectStartHandler)
 
 	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 

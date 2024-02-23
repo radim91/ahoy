@@ -1,5 +1,10 @@
 package entity
 
+import (
+	"os/exec"
+	"strings"
+)
+
 type Project struct {
     Hash string
     Name string
@@ -54,4 +59,23 @@ func GetProjects() (map[string]Project) {
 
 func GetProject(name string) (Project) {
     return GetProjects()[name]
+}
+
+func StartProject(project Project) {
+    args := []string{}
+
+    files := strings.Split(project.File, ",")
+    for _, file := range files {
+        args = append(args, "-f")
+        args = append(args, file)
+    }
+
+    args = append(args, "up", "-d")
+
+    cmd := exec.Command("docker-compose", args...)
+    err := cmd.Run()
+
+    if err != nil {
+        panic(err)
+    }
 }

@@ -6,20 +6,69 @@
     File: {{.File}}<br/>
     Workdir: {{.Workdir}}<br/>
     <button id="start">START</button><br/>
+    <button id="stop">STOP</button><br/>
+    <button id="restart">RESTART</button><br/>
+    <button id="down">DOWN</button><br/>
+    <div id="status"></div>
+    <br/>
+    <div id="log"></div>
 </p>
 {{end}}
 
 {{define "scripts"}}
 <script>
     document.addEventListener("DOMContentLoaded", function(){
+        setInterval(() => {
+            fetch("/api/project/status/{{.Name}}")
+                .then(response => response.json())
+                .then(data => {
+                    if (data[1] !== '') {
+                        fetchLogs();
+                        document.getElementById("status").innerHTML = "";
+                        let index = 0;
+                        data.forEach(function(line) {
+                            if (index !== 0 && line.includes("Up")) {
+                                document.getElementById("status").innerHTML = "STATUS: RUNNING<br/>";
+                            }
+
+                            index++;
+                        });
+                    } else {
+                        document.getElementById("status").innerHTML = "STATUS: STOPPED";
+                        document.getElementById("log").innerHTML = "";
+                    }
+                })
+        }, 5000);
+
         const start = document.getElementById("start");
-        start.addEventListener("click", function(){
+        start.addEventListener("click", function() {
             fetch("/api/project/start/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    fetchLogs();
+                    document.getElementById("status").innerHTML = "STATUS: STARTING";
                 });
         });
+
+        const stop = document.getElementById("stop");
+        stop.addEventListener("click", function() {
+            fetch("/api/project/stop/{{.Name}}")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("status").innerHTML = "STATUS: STOPPING";
+                });
+        });
+
+        function fetchLogs() {
+            fetch("/api/project/logs/{{.Name}}")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("log").innerHTML = "";
+                    data.forEach(function(line) {
+                        document.getElementById("log").innerHTML += line + "<br/>";
+                    })
+                });
+        }
     });
 </script>
 {{end}}

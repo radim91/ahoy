@@ -65,8 +65,8 @@ func apiProjectLogsHandler(w http.ResponseWriter, r *http.Request) {
 
 	for {
 		logs := entity.GetProjectLogs(r.PathValue("name"))
-		/* jsonData, _ := json.Marshal(logs) */
-		conn.WriteMessage(websocket.TextMessage, logs)
+		jsonData, _ := json.Marshal(logs)
+		conn.WriteMessage(websocket.TextMessage, jsonData)
 	}
 	/* logs := entity.GetProjectLogs(r.PathValue("name")) */
 	/* jsonData, _ := json.Marshal(logs) */

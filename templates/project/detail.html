@@ -9,44 +9,64 @@
     <button id="stop">STOP</button><br/>
     <button id="restart">RESTART</button><br/>
     <button id="down">DOWN</button><br/>
-    <div id="status"></div>
+    <div id="status">CHECKING STATUS</div>
     <br/>
-    <div id="log"></div>
+    <div id="log" data-last-line=""></div>
 </p>
 {{end}}
 
 {{define "scripts"}}
 <script>
-    document.addEventListener("DOMContentLoaded", function(){
+    let status = "STOPPED";
+    let lastText = "";
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const socket = new WebSocket("ws://localhost:8080/api/project/logs/{{.Name}}")
+
+        socket.onopen = function () {
+            console.log("Connected!");
+        }
+
+        socket.onmessage = function (event) {
+            log = document.getElementById("log");
+
+            if (lastText !== event.data) {
+                log.innerHTML += event.data;
+                lastText = event.data
+            }
+        }
+        
         setInterval(() => {
             fetch("/api/project/status/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    if (data[1] !== '') {
-                        fetchLogs();
+                    if (data[1] !== '' && status !== "STOPPING") {
+                        /* fetchLogs(); */
                         document.getElementById("status").innerHTML = "";
                         let index = 0;
                         data.forEach(function(line) {
                             if (index !== 0 && line.includes("Up")) {
-                                document.getElementById("status").innerHTML = "STATUS: RUNNING<br/>";
+                                status = "RUNNING";
+                                document.getElementById("status").innerHTML = "STATUS: " + status + "<br/>";
                             }
 
                             index++;
                         });
                     } else {
-                        document.getElementById("status").innerHTML = "STATUS: STOPPED";
+                        status = "STOPPED";
+                        document.getElementById("status").innerHTML = "STATUS: " + status;
                         document.getElementById("log").innerHTML = "";
                     }
                 })
-        }, 5000);
+        }, 1000);
 
         const start = document.getElementById("start");
         start.addEventListener("click", function() {
             fetch("/api/project/start/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    fetchLogs();
-                    document.getElementById("status").innerHTML = "STATUS: STARTING";
+                    status = "STARTING";
+                    document.getElementById("status").innerHTML = "STATUS: " + status;
                 });
         });
 
@@ -55,20 +75,20 @@
             fetch("/api/project/stop/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("status").innerHTML = "STATUS: STOPPING";
+                    status = "STOPPING";
+                    document.getElementById("status").innerHTML = "STATUS: " + status;
                 });
         });
 
-        function fetchLogs() {
-            fetch("/api/project/logs/{{.Name}}")
+        const restart = document.getElementById("restart");
+        restart.addEventListener("click", function() {
+            fetch("/api/project/restart/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("log").innerHTML = "";
-                    data.forEach(function(line) {
-                        document.getElementById("log").innerHTML += line + "<br/>";
-                    })
+                    status = "RESTARTING";
+                    document.getElementById("status").innerHTML = "STATUS: " + status;
                 });
-        }
+        });
     });
 </script>
 {{end}}

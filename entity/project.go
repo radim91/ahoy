@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"bufio"
 	"os/exec"
 	"strings"
 )
@@ -85,21 +86,34 @@ func StopProject(project Project) {
 	}
 }
 
-func GetProjectLogs(projectName string) []string {
+func RestartProject(project Project) {
+	args := setArgs(project)
+	args = append(args, "restart")
+
+	cmd := exec.Command("docker-compose", args...)
+	err := cmd.Run()
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func GetProjectLogs(projectName string) string {
 	project := GetProject(projectName)
 
 	args := setArgs(project)
-	args = append(args, "logs", "--since", "1440m", "-n", "300")
+	args = append(args, "logs", "-f", "--tail", "50")
 
-	output, err := exec.Command("docker-compose", args...).Output()
+	output, err := exec.Command("docker-compose", args...).StdoutPipe()
 
 	if err != nil {
 		panic(err)
 	}
 
-	lines := strings.Split(string(output), "\n")
+	scan := bufio.NewScanner(output)
 
-	return lines
+	return scan.Text()
+	/* lines := strings.split(string(output), "\n") */
 }
 
 func GetProjectStatus(projectName string) []string {

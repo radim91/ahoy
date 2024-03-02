@@ -22,6 +22,7 @@ func main() {
 	mux.HandleFunc("/api/container/logs/{id}", apiContainerLogsHandler)
 	mux.HandleFunc("/api/project/start/{name}", apiProjectStartHandler)
 	mux.HandleFunc("/api/project/stop/{name}", apiProjectStopHandler)
+	mux.HandleFunc("/api/project/restart/{name}", apiProjectRestartHandler)
 	mux.HandleFunc("/api/project/logs/{name}", apiProjectLogsHandler)
 	mux.HandleFunc("/api/project/status/{name}", apiProjectStatusHandler)
 

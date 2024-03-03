@@ -12,10 +12,19 @@ import (
 var upgrader = websocket.Upgrader{}
 
 func apiContainerLogsHandler(w http.ResponseWriter, r *http.Request) {
-	logs := entity.GetContainerLogs(r.PathValue("id"))
-	jsonData, _ := json.Marshal(logs)
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Print("upgrade failed: ", err)
+		return
+	}
 
-	w.Write(jsonData)
+	defer conn.Close()
+
+	for {
+		logs := entity.GetContainerLogs(r.PathValue("id"))
+		jsonData, _ := json.Marshal(logs)
+		conn.WriteMessage(websocket.TextMessage, jsonData)
+	}
 }
 
 func apiProjectStartHandler(w http.ResponseWriter, r *http.Request) {
@@ -52,26 +61,6 @@ func apiProjectRestartHandler(w http.ResponseWriter, r *http.Request) {
 	jsonData, _ := json.Marshal(msg)
 
 	w.Write(jsonData)
-}
-
-func apiProjectLogsHandler(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Print("upgrade failed: ", err)
-		return
-	}
-
-	defer conn.Close()
-
-	for {
-		logs := entity.GetProjectLogs(r.PathValue("name"))
-		jsonData, _ := json.Marshal(logs)
-		conn.WriteMessage(websocket.TextMessage, jsonData)
-	}
-	/* logs := entity.GetProjectLogs(r.PathValue("name")) */
-	/* jsonData, _ := json.Marshal(logs) */
-	/**/
-	/* w.Write(jsonData) */
 }
 
 func apiProjectStatusHandler(w http.ResponseWriter, r *http.Request) {

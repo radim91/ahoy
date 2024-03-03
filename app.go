@@ -97,7 +97,5 @@ func containerLogsHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	Uri := "/api/container/logs/" + (r.PathValue("id"))
-
-	tmpl.ExecuteTemplate(w, "base", Uri)
+	tmpl.ExecuteTemplate(w, "base", r.PathValue("id"))
 }

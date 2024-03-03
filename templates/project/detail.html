@@ -10,38 +10,19 @@
     <button id="restart">RESTART</button><br/>
     <button id="down">DOWN</button><br/>
     <div id="status">CHECKING STATUS</div>
-    <br/>
-    <div id="log" data-last-line=""></div>
 </p>
 {{end}}
 
 {{define "scripts"}}
 <script>
     let status = "STOPPED";
-    let lastText = "";
 
     document.addEventListener("DOMContentLoaded", function() {
-        const socket = new WebSocket("ws://localhost:8080/api/project/logs/{{.Name}}")
-
-        socket.onopen = function () {
-            console.log("Connected!");
-        }
-
-        socket.onmessage = function (event) {
-            log = document.getElementById("log");
-
-            if (lastText !== event.data) {
-                log.innerHTML += event.data;
-                lastText = event.data
-            }
-        }
-        
         setInterval(() => {
             fetch("/api/project/status/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
                     if (data[1] !== '' && status !== "STOPPING") {
-                        /* fetchLogs(); */
                         document.getElementById("status").innerHTML = "";
                         let index = 0;
                         data.forEach(function(line) {
@@ -55,7 +36,6 @@
                     } else {
                         status = "STOPPED";
                         document.getElementById("status").innerHTML = "STATUS: " + status;
-                        document.getElementById("log").innerHTML = "";
                     }
                 })
         }, 1000);

@@ -65,7 +65,7 @@ func apiProjectRestartHandler(w http.ResponseWriter, r *http.Request) {
 
 func apiProjectStatusHandler(w http.ResponseWriter, r *http.Request) {
 	status := entity.GetProjectStatus(r.PathValue("name"))
-	jsonData, _ := json.Marshal(status)
 
-	w.Write(jsonData)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(status))
 }

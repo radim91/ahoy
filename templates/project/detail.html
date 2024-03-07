@@ -15,38 +15,37 @@
 
 {{define "scripts"}}
 <script>
-    let status = "STOPPED";
+    const statusElement = document.getElementById("status");
+    let status = 'STOPPED';
 
     document.addEventListener("DOMContentLoaded", function() {
         setInterval(() => {
             fetch("/api/project/status/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    if (data[1] !== '' && status !== "STOPPING") {
-                        document.getElementById("status").innerHTML = "";
-                        let index = 0;
-                        data.forEach(function(line) {
-                            if (index !== 0 && line.includes("Up")) {
-                                status = "RUNNING";
-                                document.getElementById("status").innerHTML = "STATUS: " + status + "<br/>";
-                            }
-
-                            index++;
-                        });
-                    } else {
-                        status = "STOPPED";
-                        document.getElementById("status").innerHTML = "STATUS: " + status;
+                    if (data.length === 0 && status === 'STOPPING') {
+                        status = 'STOPPED';
                     }
+
+                    statusElement.innerHTML = "STATUS: " + status;
+
+                    if (data.length > 0 && status !== 'STOPPING') {
+                        statusElement.innerHTML = "";
+
+                        data.forEach(function(line) {
+                            statusElement.innerHTML += `<a href='/containers/${line.ID}'>${line.Name}</a>: `; 
+                            statusElement.innerHTML += line.Status + "<br/>";
+                        });
+                    } 
                 })
-        }, 1000);
+        }, 2000);
 
         const start = document.getElementById("start");
         start.addEventListener("click", function() {
             fetch("/api/project/start/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    status = "STARTING";
-                    document.getElementById("status").innerHTML = "STATUS: " + status;
+                    status = 'STARTING';
                 });
         });
 
@@ -55,8 +54,7 @@
             fetch("/api/project/stop/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    status = "STOPPING";
-                    document.getElementById("status").innerHTML = "STATUS: " + status;
+                    status = 'STOPPING';
                 });
         });
 
@@ -65,8 +63,7 @@
             fetch("/api/project/restart/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
-                    status = "RESTARTING";
-                    document.getElementById("status").innerHTML = "STATUS: " + status;
+                    status = 'RESTARTING';
                 });
         });
     });

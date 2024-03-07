@@ -14,7 +14,13 @@
         }
 
         socket.onmessage = function (event) {
-            logs.innerHTML = (JSON.parse(event.data)).join("<br/>");
+            const parsedData = JSON.parse(event.data);
+
+            if (typeof parsedData !== "undefined" && parsedData !== null) {
+                logs.innerHTML = parsedData.join("<br/>");
+            } else {
+                logs.innerHTML = 'NO DATA AVAILABLE';
+            }
         }
     });
 </script>

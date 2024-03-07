@@ -97,11 +97,11 @@ func RestartProject(project Project) {
 	}
 }
 
-func GetProjectStatus(projectName string) []string {
+func GetProjectStatus(projectName string) string {
 	project := GetProject(projectName)
 
 	args := setArgs(project)
-	args = append(args, "ps")
+	args = append(args, "ps", "--format", "json")
 
 	output, err := exec.Command("docker-compose", args...).Output()
 
@@ -110,8 +110,9 @@ func GetProjectStatus(projectName string) []string {
 	}
 
 	lines := strings.Split(string(output), "\n")
+	jsonObjects := strings.Join(lines[0:len(lines)-1], ",")
 
-	return lines
+	return "[" + jsonObjects + "]"
 }
 
 func setArgs(project Project) []string {

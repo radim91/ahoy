@@ -3,6 +3,13 @@ body {
     color: white;
     font-family: monospace;
 }
+a {
+    color: lightgray;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
 .container {
     display: flex;
     padding: 20px;
@@ -19,6 +26,12 @@ body {
         width: 100%;
         color: white;
     }
+}
+.hidden {
+    display: none;
+}
+.mt-1 {
+    margin-top: 1rem;
 }
 
 #logs {

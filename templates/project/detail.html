@@ -5,17 +5,23 @@
     Hash: {{.Hash}}<br/>
     File: {{.File}}<br/>
     Workdir: {{.Workdir}}<br/>
-    <button id="start">START</button><br/>
-    <button id="stop">STOP</button><br/>
-    <button id="restart">RESTART</button><br/>
-    <button id="down">DOWN</button><br/>
-    <div id="status">CHECKING STATUS</div>
 </p>
+<div>
+    <button id="start">START</button>
+    <button id="stop" class="hidden">STOP</button>
+    <button id="restart" class="hidden">RESTART</button>
+    <button id="down" class="hidden">DOWN</button>
+</div>
+<div id="status" class="mt-1">CHECKING STATUS</div>
 {{end}}
 
 {{define "scripts"}}
 <script>
     const statusElement = document.getElementById("status");
+    const start = document.getElementById("start");
+    const stop = document.getElementById("stop");
+    const restart = document.getElementById("restart");
+    const down = document.getElementById("down");
     let status = 'STOPPED';
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -25,6 +31,11 @@
                 .then(data => {
                     if (data.length === 0 && status === 'STOPPING') {
                         status = 'STOPPED';
+
+                        stop.classList.toggle("hidden");
+                        restart.classList.toggle("hidden");
+                        down.classList.toggle("hidden");
+                        start.classList.toggle("hidden");
                     }
 
                     statusElement.innerHTML = "STATUS: " + status;
@@ -32,15 +43,19 @@
                     if (data.length > 0 && status !== 'STOPPING') {
                         statusElement.innerHTML = "";
 
+                        stop.classList.remove("hidden");
+                        restart.classList.remove("hidden");
+                        down.classList.remove("hidden");
+                        start.classList.add("hidden");
+
                         data.forEach(function(line) {
                             statusElement.innerHTML += `<a href='/containers/${line.ID}'>${line.Name}</a>: `; 
                             statusElement.innerHTML += line.Status + "<br/>";
                         });
                     } 
                 })
-        }, 2000);
+        }, 1000);
 
-        const start = document.getElementById("start");
         start.addEventListener("click", function() {
             fetch("/api/project/start/{{.Name}}")
                 .then(response => response.json())
@@ -49,7 +64,6 @@
                 });
         });
 
-        const stop = document.getElementById("stop");
         stop.addEventListener("click", function() {
             fetch("/api/project/stop/{{.Name}}")
                 .then(response => response.json())
@@ -58,12 +72,19 @@
                 });
         });
 
-        const restart = document.getElementById("restart");
         restart.addEventListener("click", function() {
             fetch("/api/project/restart/{{.Name}}")
                 .then(response => response.json())
                 .then(data => {
                     status = 'RESTARTING';
+                });
+        });
+
+        down.addEventListener("click", function() {
+            fetch("/api/project/down/{{.Name}}")
+                .then(response => response.json())
+                .then(data => {
+                    status = 'DOWN';
                 });
         });
     });

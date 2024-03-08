@@ -23,6 +23,7 @@ func main() {
 	mux.HandleFunc("/api/project/start/{name}", apiProjectStartHandler)
 	mux.HandleFunc("/api/project/stop/{name}", apiProjectStopHandler)
 	mux.HandleFunc("/api/project/restart/{name}", apiProjectRestartHandler)
+	mux.HandleFunc("/api/project/down/{name}", apiProjectDownHandler)
 	mux.HandleFunc("/api/project/status/{name}", apiProjectStatusHandler)
 
 	// FS

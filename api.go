@@ -69,3 +69,15 @@ func apiProjectStatusHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(status))
 }
+
+func apiProjectDownHandler(w http.ResponseWriter, r *http.Request) {
+	go entity.DownProject(entity.GetProject(r.PathValue("name")))
+
+	msg := map[string]string{
+		"message": "down",
+	}
+
+	jsonData, _ := json.Marshal(msg)
+
+	w.Write(jsonData)
+}

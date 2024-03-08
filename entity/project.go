@@ -115,6 +115,18 @@ func GetProjectStatus(projectName string) string {
 	return "[" + jsonObjects + "]"
 }
 
+func DownProject(project Project) {
+	args := setArgs(project)
+	args = append(args, "down")
+
+	cmd := exec.Command("docker-compose", args...)
+	err := cmd.Run()
+
+	if err != nil {
+		panic(err)
+	}
+}
+
 func setArgs(project Project) []string {
 	args := []string{}
 

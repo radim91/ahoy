@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -23,8 +25,17 @@ func GetProjects() map[string]Project {
 	containers := GetContainers()
 	projects := make(map[string]Project, 0)
 
+projectLoop:
 	for _, container := range containers {
 		if container.Labels["com.docker.compose.project"] != "" {
+			configFiles := strings.Split(container.Labels["com.docker.compose.project.config_files"], ",")
+			for _, configFile := range configFiles {
+				if _, err := os.Stat(configFile); err != nil {
+					fmt.Println(configFile)
+					continue projectLoop
+				}
+			}
+
 			projectName := container.Labels["com.docker.compose.project"]
 			existingProject, ok := projects[projectName]
 			service := Service{
@@ -99,7 +110,6 @@ func RestartProject(project Project) {
 
 func GetProjectStatus(projectName string) string {
 	project := GetProject(projectName)
-
 	args := setArgs(project)
 	args = append(args, "ps", "--format", "json")
 

@@ -25,36 +25,47 @@
     let status = 'STOPPED';
 
     document.addEventListener("DOMContentLoaded", function() {
-        setInterval(() => {
-            fetch("/api/project/status/{{.Name}}")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0 && status === 'STOPPING') {
-                        status = 'STOPPED';
+        const socket = new WebSocket("ws://localhost:8080/api/project/status/{{.Name}}")
 
-                        stop.classList.toggle("hidden");
-                        restart.classList.toggle("hidden");
-                        down.classList.toggle("hidden");
-                        start.classList.toggle("hidden");
+        socket.onopen = function () {
+            console.log("Connected!");
+        }
+
+        socket.onmessage = function (event) {
+            const parsedData = JSON.parse(event.data);
+
+            if (parsedData.length === 0 && status === 'STOPPING') {
+                status = 'STOPPED';
+
+                stop.classList.toggle("hidden");
+                restart.classList.toggle("hidden");
+                down.classList.toggle("hidden");
+                start.classList.toggle("hidden");
+            }
+
+            statusElement.innerHTML = "STATUS: " + status;
+
+            if (parsedData.length > 0 && status !== 'STOPPING') {
+                statusElement.innerHTML = "";
+
+                stop.classList.remove("hidden");
+                restart.classList.remove("hidden");
+                down.classList.remove("hidden");
+                start.classList.add("hidden");
+
+                parsedData.forEach(function(line) {
+                    const link = document.createElement('a');
+                    link.href = `/containers/${line.ID}`;
+                    link.innerHTML = `${line.Name}`;
+                    
+                    if (!statusElement.contains(link)) {
+                        statusElement.appendChild(link); 
                     }
 
-                    statusElement.innerHTML = "STATUS: " + status;
-
-                    if (data.length > 0 && status !== 'STOPPING') {
-                        statusElement.innerHTML = "";
-
-                        stop.classList.remove("hidden");
-                        restart.classList.remove("hidden");
-                        down.classList.remove("hidden");
-                        start.classList.add("hidden");
-
-                        data.forEach(function(line) {
-                            statusElement.innerHTML += `<a href='/containers/${line.ID}'>${line.Name}</a>: `; 
-                            statusElement.innerHTML += line.Status + "<br/>";
-                        });
-                    } 
-                })
-        }, 1000);
+                    statusElement.innerHTML += line.Status + "<br/>";
+                });
+            } 
+        }
 
         start.addEventListener("click", function() {
             fetch("/api/project/start/{{.Name}}")

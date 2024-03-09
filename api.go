@@ -64,10 +64,18 @@ func apiProjectRestartHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func apiProjectStatusHandler(w http.ResponseWriter, r *http.Request) {
-	status := entity.GetProjectStatus(r.PathValue("name"))
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Print("upgrade failed: ", err)
+		return
+	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(status))
+	defer conn.Close()
+
+	for {
+		status := entity.GetProjectStatus(r.PathValue("name"))
+		conn.WriteMessage(websocket.TextMessage, []byte(status))
+	}
 }
 
 func apiProjectDownHandler(w http.ResponseWriter, r *http.Request) {

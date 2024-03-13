@@ -52,3 +52,15 @@ func GetContainerLogs(id string) []string {
 
 	return logsSlice
 }
+
+func RemoveContainer(id string) {
+	client := GetClient()
+	err := client.ContainerRemove(context.Background(), id, types.ContainerRemoveOptions{
+		RemoveVolumes: true,
+		Force:         true,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+}

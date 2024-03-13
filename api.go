@@ -27,6 +27,18 @@ func apiContainerLogsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func apiContainerRemoveHandler(w http.ResponseWriter, r *http.Request) {
+	entity.RemoveContainer(r.PathValue("id"))
+
+	msg := map[string]string{
+		"message": "removed",
+	}
+
+	jsonData, _ := json.Marshal(msg)
+
+	w.Write(jsonData)
+}
+
 func apiProjectStartHandler(w http.ResponseWriter, r *http.Request) {
 	go entity.StartProject(entity.GetProject(r.PathValue("name")))
 

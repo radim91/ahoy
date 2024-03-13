@@ -4,7 +4,27 @@
 <p>
     {{.ID}}: {{.Name}}
 </p>
+<div>
+    <button id="remove">REMOVE</button>
+</div>
 {{end}}
 
 {{define "scripts"}}
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        const remove = document.getElementById("remove");
+        remove.addEventListener("click", function() {
+            fetch("/api/container/remove/{{.ID}}")
+                .then(response => response.json())
+                .then(data => {
+                    remove.innerHTML = "REMOVING...";
+                    remove.disabled = true;
+
+                    setTimeout(function() {
+                        window.location.href = "/containers";
+                    }, 1000)
+                });
+        });
+    });
+</script>
 {{end}}

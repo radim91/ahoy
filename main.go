@@ -20,6 +20,7 @@ func main() {
 
 	// api.go
 	mux.HandleFunc("/api/container/logs/{id}", apiContainerLogsHandler)
+	mux.HandleFunc("/api/container/remove/{id}", apiContainerRemoveHandler)
 	mux.HandleFunc("/api/project/start/{name}", apiProjectStartHandler)
 	mux.HandleFunc("/api/project/stop/{name}", apiProjectStopHandler)
 	mux.HandleFunc("/api/project/restart/{name}", apiProjectRestartHandler)

@@ -19,7 +19,10 @@ func main() {
 	mux.HandleFunc("/projects/{name}", projectDetailHandler)
 
 	// api.go
+	mux.HandleFunc("/api/container/start/{id}", apiContainerStartHandler)
+	mux.HandleFunc("/api/container/stop/{id}", apiContainerStopHandler)
 	mux.HandleFunc("/api/container/logs/{id}", apiContainerLogsHandler)
+	mux.HandleFunc("/api/container/status/{id}", apiContainerStatusHandler)
 	mux.HandleFunc("/api/container/remove/{id}", apiContainerRemoveHandler)
 	mux.HandleFunc("/api/project/start/{name}", apiProjectStartHandler)
 	mux.HandleFunc("/api/project/stop/{name}", apiProjectStopHandler)

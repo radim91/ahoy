@@ -3,9 +3,11 @@ package entity
 import (
 	"bufio"
 	"context"
+	"encoding/json"
 	"time"
 
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
 )
 
 func GetContainers() []types.Container {
@@ -63,4 +65,35 @@ func RemoveContainer(id string) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func StartContainer(id string) {
+	client := GetClient()
+	err := client.ContainerStart(context.Background(), id, types.ContainerStartOptions{})
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func StopContainer(id string) {
+	client := GetClient()
+	err := client.ContainerStop(context.Background(), id, container.StopOptions{})
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func GetContainerStatus(id string) []byte {
+	client := GetClient()
+	data, err := client.ContainerExecInspect(context.Background(), id)
+
+	if err != nil {
+		panic(err)
+	}
+
+	jsonData, _ := json.Marshal(data)
+
+	return jsonData
 }

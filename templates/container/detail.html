@@ -2,9 +2,11 @@
 <h2>Container</h2>
 <a href="/containers/{{.ID}}/logs">Logs</a>
 <p>
-    {{.ID}}: {{.Name}}
+    {{.ID}}: {{.Name}} status: <span id="status">STOPPED</span>
 </p>
 <div>
+    <button id="start">START</button>
+    <button id="stop">STOP</button>
     <button id="remove">REMOVE</button>
 </div>
 {{end}}
@@ -13,6 +15,9 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         const remove = document.getElementById("remove");
+        const start = document.getElementById("start");
+        const stop = document.getElementById("stop");
+
         remove.addEventListener("click", function() {
             fetch("/api/container/remove/{{.ID}}")
                 .then(response => response.json())
@@ -25,6 +30,38 @@
                     }, 1000)
                 });
         });
+
+        start.addEventListener("click", function() {
+            fetch("/api/container/start/{{.ID}}")
+                .then(response => response.json())
+                .then(data => {
+                    start.innerHTML = "STARTING...";
+                    start.disabled = true;
+                });
+        })
+
+        stop.addEventListener("click", function() {
+            fetch("/api/container/stop/{{.ID}}")
+                .then(response => response.json())
+                .then(data => {
+                    stop.innerHTML = "STOPPING...";
+                    stop.disabled = true;
+                });
+        })
+        
+        const socket = new WebSocket("ws://localhost:8080/api/container/status/{{.ID}}")
+
+        socket.onopen = function () {
+            console.log("Connected!");
+        }
+
+        socket.onmessage = function (event) {
+            console.log(event)
+            const parsedData = JSON.parse(event.data);
+            const statusElement = document.getElementById("status");
+
+            statusElement.innerHTML = "STATUS: " + parsedData.Running;
+        }
     });
 </script>
 {{end}}

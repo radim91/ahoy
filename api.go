@@ -78,6 +78,14 @@ func apiContainerRemoveHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
+func apiImageRemoveHandler(w http.ResponseWriter, r *http.Request) {
+	removeConfirmation := entity.RemoveImage(r.PathValue("id"))
+
+	jsonData, _ := json.Marshal(removeConfirmation)
+
+	w.Write(jsonData)
+}
+
 func apiProjectStartHandler(w http.ResponseWriter, r *http.Request) {
 	go entity.StartProject(entity.GetProject(r.PathValue("name")))
 

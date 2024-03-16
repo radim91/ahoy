@@ -1,0 +1,41 @@
+{{define "content"}}
+<h2>Image detail</h2>
+<p>
+    ID: {{.ID}}<br/>
+    RepoTags: {{.RepoTags}}<br/>
+    RepoDigests: {{.RepoDigests}}<br/>
+    Created: {{.Created}}<br/>
+    Size: {{.Size}}<br/>
+    VirtualSize: {{.VirtualSize}}<br/>
+    Parent: {{.Parent}}<br/>
+    DockerVersion: {{.DockerVersion}}<br/>
+    Author: {{.Author}}<br/>
+    Os: {{.Os}}<br/>
+    OsVersion: {{.OsVersion}}<br/>
+    Architecture: {{.Architecture}}<br/>
+    Config: {{.Config}}<br/>
+    Container: {{.Container}}<br/>
+    ContainerConfig: {{.ContainerConfig}}<br/>
+    RootFS: {{.RootFS}}<br/>
+    Metadata: {{.Metadata}}<br/>
+</p>
+<div>
+    <button id="remove">REMOVE</button>
+</div>
+{{end}}
+
+{{define "scripts"}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("remove").addEventListener("click", function() {
+            fetch("/api/image/remove/{{.ID}}", {
+                method: "DELETE"
+            });
+
+            setTimeout(function() {
+                window.location = "/images";
+            }, 100);
+        });
+    });
+</script>
+{{end}}

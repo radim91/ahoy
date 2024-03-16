@@ -2,7 +2,7 @@
 <h2>Images</h2>
 <p>
     {{range .}}
-        {{.ID}}: {{.RepoTags}}<br/>
+        <a href="/images/{{.ID}}">{{.ID}}</a>: {{.RepoTags}}<br/>
     {{end}}
 </p>
 {{end}}

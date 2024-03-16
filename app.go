@@ -54,6 +54,18 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "base", Images)
 }
 
+func imageDetailHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.New("").ParseFiles("templates/image/detail.html", "templates/base.html")
+
+	if err != nil {
+		panic(err)
+	}
+
+	Image := entity.GetImage(r.PathValue("id"))
+
+	tmpl.ExecuteTemplate(w, "base", Image)
+}
+
 func networksHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.New("").ParseFiles("templates/network/list.html", "templates/base.html")
 

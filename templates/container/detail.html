@@ -56,11 +56,23 @@
         }
 
         socket.onmessage = function (event) {
-            console.log(event)
             const parsedData = JSON.parse(event.data);
             const statusElement = document.getElementById("status");
+            const status = parsedData.State.Running ? "RUNNING" : "STOPPED";
 
-            statusElement.innerHTML = "STATUS: " + parsedData.Running;
+            if (status === "RUNNING") {
+                start.classList.add("hidden");
+                start.innerHTML = "START";
+                start.disabled = false;
+                stop.classList.remove("hidden");
+            } else {
+                start.classList.remove("hidden");
+                stop.innerHTML = "STOP";
+                stop.disabled = false;
+                stop.classList.add("hidden");
+            }
+
+            statusElement.innerHTML = status;
         }
     });
 </script>

@@ -2,7 +2,7 @@
 <h2>Networks</h2>
 <p>
     {{range .}}
-        {{.ID}}: {{.Name}}<br/>
+        <a href="/networks/{{.ID}}">{{.ID}}</a>: {{.Name}}<br/>
     {{end}}
 </p>
 {{end}}

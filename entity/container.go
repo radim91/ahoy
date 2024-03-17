@@ -87,7 +87,7 @@ func StopContainer(id string) {
 
 func GetContainerStatus(id string) []byte {
 	client := GetClient()
-	data, err := client.ContainerExecInspect(context.Background(), id)
+	data, err := client.ContainerInspect(context.Background(), id)
 
 	if err != nil {
 		panic(err)

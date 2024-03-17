@@ -1,0 +1,20 @@
+{{define "content"}}
+<h2>Network</h2>
+<p>
+    {{.ID}}: {{.Name}}<br/>
+    IPAM: {{.IPAM}}<br/>
+    Driver: {{.Driver}}<br/>
+    Scope: {{.Scope}}<br/>
+    Labels: {{.Labels}}<br/>
+    Internal: {{.Internal}}<br/>
+    Containers: {{.Containers}}
+</p>
+{{end}}
+
+{{define "scripts"}}
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log({{.}});
+    });
+</script>
+{{end}}

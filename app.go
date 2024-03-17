@@ -78,6 +78,18 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "base", Networks)
 }
 
+func networkDetailHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.New("").ParseFiles("templates/network/detail.html", "templates/base.html")
+
+	if err != nil {
+		panic(err)
+	}
+
+	Network := entity.GetNetwork(r.PathValue("id"))
+
+	tmpl.ExecuteTemplate(w, "base", Network)
+}
+
 func volumesHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.New("").ParseFiles("templates/volume/list.html", "templates/base.html")
 

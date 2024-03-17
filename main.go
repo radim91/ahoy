@@ -18,6 +18,7 @@ func main() {
 	mux.HandleFunc("/containers/{id}/logs", containerLogsHandler)
 	mux.HandleFunc("/images/{id}", imageDetailHandler)
 	mux.HandleFunc("/projects/{name}", projectDetailHandler)
+	mux.HandleFunc("/networks/{id}", networkDetailHandler)
 
 	// api.go
 	mux.HandleFunc("/api/container/start/{id}", apiContainerStartHandler)

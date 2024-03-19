@@ -2,10 +2,13 @@
 <h2>Volumes</h2>
 <p>
     {{range .}}
-        {{.Driver}}: {{.Name}}<br/>
+        {{.Driver}}: <a href="/volumes/{{.Name}}">{{.Name}}</a><br/>
     {{end}}
 </p>
 {{end}}
 
 {{define "scripts"}}
+<script>
+console.log({{.}});
+</script>
 {{end}}

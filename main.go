@@ -19,6 +19,7 @@ func main() {
 	mux.HandleFunc("/images/{id}", imageDetailHandler)
 	mux.HandleFunc("/projects/{name}", projectDetailHandler)
 	mux.HandleFunc("/networks/{id}", networkDetailHandler)
+	mux.HandleFunc("/volumes/{name}", volumeDetailHandler)
 
 	// api.go
 	mux.HandleFunc("/api/container/start/{id}", apiContainerStartHandler)

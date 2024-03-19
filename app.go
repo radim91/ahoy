@@ -102,6 +102,18 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "base", Volumes)
 }
 
+func volumeDetailHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.New("").ParseFiles("templates/volume/detail.html", "templates/base.html")
+
+	if err != nil {
+		panic(err)
+	}
+
+	volume := entity.GetVolume(r.PathValue("name"))
+
+	tmpl.ExecuteTemplate(w, "base", volume)
+}
+
 func containerDetailHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.New("").ParseFiles("templates/container/detail.html", "templates/base.html")
 

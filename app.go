@@ -86,8 +86,14 @@ func networkDetailHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Network := entity.GetNetwork(r.PathValue("id"))
+    Containers := entity.GetContainers();
 
-	tmpl.ExecuteTemplate(w, "base", Network)
+    var data = map[string]interface{} {
+        "Network": Network,
+        "Containers": Containers,
+    }
+
+	tmpl.ExecuteTemplate(w, "base", data)
 }
 
 func volumesHandler(w http.ResponseWriter, r *http.Request) {

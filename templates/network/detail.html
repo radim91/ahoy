@@ -1,20 +1,40 @@
 {{define "content"}}
 <h2>Network</h2>
 <p>
-    {{.ID}}: {{.Name}}<br/>
-    IPAM: {{.IPAM}}<br/>
-    Driver: {{.Driver}}<br/>
-    Scope: {{.Scope}}<br/>
-    Labels: {{.Labels}}<br/>
-    Internal: {{.Internal}}<br/>
-    Containers: {{.Containers}}
+    {{.Network.ID}}: {{.Network.Name}}<br/>
+    IPAM: {{.Network.IPAM}}<br/>
+    Driver: {{.Network.Driver}}<br/>
+    Scope: {{.Network.Scope}}<br/>
+    Labels: {{.Network.Labels}}<br/>
+    Internal: {{.Network.Internal}}<br/>
 </p>
+<div>
+    Containers:<br/>
+    {{range $id, $networkContainer := .Network.Containers}}
+        <a href="/containers/{{$id}}">{{$networkContainer.Name}}</a> - {{$networkContainer.IPv4Address}}<br/>
+    {{end}}
+</div>
+<br/>
+<div>
+    <label>Connect container:</label>
+    <select id="container">
+        {{range $container := .Containers}}
+            {{if eq $container.State "running"}}
+                <option value="{{$container.ID}}">{{$container.Names}}</option>
+            {{end}}
+        {{end}}
+    </select>
+    <button id="connect">CONNECT</button>
+    <button id="disconnect" class="hidden">DISCONNECT</button>
+</div>
 {{end}}
 
 {{define "scripts"}}
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
-        console.log({{.}});
+        document.getElementById("connect").addEventListener("click", function() {
+            console.log("connect"); 
+        });
     });
 </script>
 {{end}}

@@ -2,6 +2,7 @@ package entity
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/docker/docker/api/types"
 )
@@ -26,4 +27,24 @@ func GetNetwork(id string) types.NetworkResource {
 	}
 
 	return network
+}
+
+func AddContainerToNetwork(id string, containerId string) {
+    client := GetClient()
+
+    err := client.NetworkConnect(context.Background(), id, containerId, nil)
+
+    if err != nil {
+        fmt.Println(err)
+    }
+}
+
+func RemoveContainerFromNetwork(id string, containerId string) {
+    client := GetClient()
+
+    err := client.NetworkDisconnect(context.Background(), id, containerId, true)
+
+    if err != nil {
+        fmt.Println(err)
+    }
 }

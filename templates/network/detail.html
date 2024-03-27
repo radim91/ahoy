@@ -25,7 +25,7 @@
         {{end}}
     </select>
     <button id="connect">CONNECT</button>
-    <button id="disconnect" class="hidden">DISCONNECT</button>
+    <button id="disconnect">DISCONNECT</button>
 </div>
 {{end}}
 
@@ -33,7 +33,47 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("connect").addEventListener("click", function() {
-            console.log("connect"); 
+            fetch("/api/network/connect", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "ContainerId": document.getElementById("container").value,
+                    "NetworkId": "{{.Network.ID}}"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                connect.innerHTML = "CONNECTING...";
+                connect.disabled = true;
+
+                setTimeout(function() {
+                    location.reload();
+                }, 1000)
+            });
+        });
+
+        document.getElementById("disconnect").addEventListener("click", function() {
+            fetch("/api/network/disconnect", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "ContainerId": document.getElementById("container").value,
+                    "NetworkId": "{{.Network.ID}}"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                disconnect.innerHTML = "DISCONNECTING...";
+                disconnect.disabled = true;
+
+                setTimeout(function() {
+                    location.reload();
+                }, 1000)
+            });
         });
     });
 </script>

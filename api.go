@@ -86,6 +86,50 @@ func apiImageRemoveHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
+type NetworkConnectRequest struct {
+    ContainerId, NetworkId string
+}
+
+func apiNetworkAddContainerHandler(w http.ResponseWriter, r *http.Request) {
+    dec := json.NewDecoder(r.Body)
+    var body NetworkConnectRequest
+
+    err := dec.Decode(&body)
+    if err != nil {
+        panic(err)
+    }
+
+    entity.AddContainerToNetwork(body.NetworkId, body.ContainerId)
+
+    msg := map[string]string{
+        "message": "connected",
+    }
+
+    jsonData, _ := json.Marshal(msg)
+
+    w.Write(jsonData)
+}
+
+func apiNetworkRemoveContainerHandler(w http.ResponseWriter, r *http.Request) {
+    dec := json.NewDecoder(r.Body)
+    var body NetworkConnectRequest
+
+    err := dec.Decode(&body)
+    if err != nil {
+        panic(err)
+    }
+
+    entity.RemoveContainerFromNetwork(body.NetworkId, body.ContainerId)
+
+    msg := map[string]string{
+        "message": "disconnected",
+    }
+
+    jsonData, _ := json.Marshal(msg)
+
+    w.Write(jsonData)
+}
+
 func apiProjectStartHandler(w http.ResponseWriter, r *http.Request) {
 	go entity.StartProject(entity.GetProject(r.PathValue("name")))
 

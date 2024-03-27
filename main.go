@@ -33,6 +33,8 @@ func main() {
 	mux.HandleFunc("/api/project/restart/{name}", apiProjectRestartHandler)
 	mux.HandleFunc("/api/project/down/{name}", apiProjectDownHandler)
 	mux.HandleFunc("/api/project/status/{name}", apiProjectStatusHandler)
+	mux.HandleFunc("POST /api/network/connect", apiNetworkAddContainerHandler)
+	mux.HandleFunc("POST /api/network/disconnect", apiNetworkRemoveContainerHandler)
 
 	// FS
 	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))

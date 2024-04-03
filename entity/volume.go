@@ -57,3 +57,12 @@ func GetVolume(name string) volume.Volume {
 
 	return volume
 }
+
+func RemoveVolume(name string) {
+    client := GetClient()
+    err := client.VolumeRemove(context.Background(), name, true)
+
+    if err != nil {
+        panic(err)
+    }
+}

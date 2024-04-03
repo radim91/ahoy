@@ -192,3 +192,15 @@ func apiProjectDownHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(jsonData)
 }
+
+func apiVolumeRemoveHandler(w http.ResponseWriter, r *http.Request) {
+    go entity.RemoveVolume(r.PathValue("name"))
+
+    msg := map[string]string{
+        "message": "removed",
+    }
+
+    jsonData, _ := json.Marshal(msg)
+
+    w.Write(jsonData)
+}

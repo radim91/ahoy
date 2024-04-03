@@ -47,6 +47,7 @@ func GetContainerLogs(id string) []string {
 	defer logs.Close()
 
 	var logsSlice []string
+
 	scanner := bufio.NewScanner(logs)
 	for scanner.Scan() {
 		logsSlice = append(logsSlice, scanner.Text()[8:])

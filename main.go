@@ -33,6 +33,7 @@ func main() {
 	mux.HandleFunc("/api/project/restart/{name}", apiProjectRestartHandler)
 	mux.HandleFunc("/api/project/down/{name}", apiProjectDownHandler)
 	mux.HandleFunc("/api/project/status/{name}", apiProjectStatusHandler)
+    mux.HandleFunc("/api/volume/remove/{name}", apiVolumeRemoveHandler)
 	mux.HandleFunc("POST /api/network/connect", apiNetworkAddContainerHandler)
 	mux.HandleFunc("POST /api/network/disconnect", apiNetworkRemoveContainerHandler)
 

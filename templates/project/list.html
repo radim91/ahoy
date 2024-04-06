@@ -2,7 +2,7 @@
 <h2>Projects</h2>
 <p>
     {{range .}}
-        <a href="/projects/{{.Name}}">{{.Name}}</a><br/>
+    <a href="/projects/{{.Name}}">{{.Name}}</a>{{if eq .Running true}} - running{{end}}<br/>
     {{end}}
 </p>
 {{end}}

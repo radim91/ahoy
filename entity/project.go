@@ -1,7 +1,6 @@
 package entity
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -13,6 +12,7 @@ type Project struct {
 	File     string
 	Workdir  string
 	Services []Service
+    Running bool
 }
 
 type Service struct {
@@ -31,7 +31,6 @@ projectLoop:
 			configFiles := strings.Split(container.Labels["com.docker.compose.project.config_files"], ",")
 			for _, configFile := range configFiles {
 				if _, err := os.Stat(configFile); err != nil {
-					fmt.Println(configFile)
 					continue projectLoop
 				}
 			}
@@ -60,6 +59,10 @@ projectLoop:
 					},
 				}
 			}
+
+            if container.State == "running" {
+                project.Running = true
+            }
 
 			projects[project.Name] = project
 		}

@@ -2,14 +2,23 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"radim91/entity"
+    "time"
 
 	"github.com/gorilla/websocket"
 )
 
-var upgrader = websocket.Upgrader{}
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
+
+type NetworkConnectRequest struct {
+    ContainerId, NetworkId string
+}
 
 func apiContainerStartHandler(w http.ResponseWriter, r *http.Request) {
 	go entity.StartContainer(r.PathValue("id"))
@@ -33,8 +42,15 @@ func apiContainerStatusHandler(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	for {
+        time.Sleep(1 * time.Second)
 		status := entity.GetContainerStatus(r.PathValue("id"))
-		conn.WriteMessage(websocket.TextMessage, []byte(status))
+        connErr := conn.WriteMessage(websocket.TextMessage, []byte(status))
+
+        if connErr != nil {
+            fmt.Println(connErr)
+
+            break
+        }
 	}
 }
 
@@ -60,9 +76,16 @@ func apiContainerLogsHandler(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	for {
+        time.Sleep(1 * time.Second)
 		logs := entity.GetContainerLogs(r.PathValue("id"))
 		jsonData, _ := json.Marshal(logs)
-		conn.WriteMessage(websocket.TextMessage, jsonData)
+        err := conn.WriteMessage(websocket.TextMessage, jsonData)
+
+        if err != nil {
+            fmt.Println(err)
+
+            break
+        }
 	}
 }
 
@@ -84,10 +107,6 @@ func apiImageRemoveHandler(w http.ResponseWriter, r *http.Request) {
 	jsonData, _ := json.Marshal(removeConfirmation)
 
 	w.Write(jsonData)
-}
-
-type NetworkConnectRequest struct {
-    ContainerId, NetworkId string
 }
 
 func apiNetworkAddContainerHandler(w http.ResponseWriter, r *http.Request) {
@@ -176,6 +195,7 @@ func apiProjectStatusHandler(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	for {
+        time.Sleep(1 * time.Second)
 		status := entity.GetProjectStatus(r.PathValue("name"))
 		conn.WriteMessage(websocket.TextMessage, []byte(status))
 	}

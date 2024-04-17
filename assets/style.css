@@ -25,6 +25,7 @@ a:hover {
 }
 .content {
     padding-left: 4rem;
+    width: 100%;
 }
 .menu {
     min-width: 200px;
@@ -34,14 +35,44 @@ a:hover {
         display: block;
         width: 100%;
         background-color: #4F4F4F;
-        margin: 3px 0px;
-        padding: 5px;
+        margin: 5px 0px;
+        padding: 10px;
         border: 0px;
         border-radius: 7px;
         color: white;
     }
     .item:hover {
         background-color: #3D3D3D;
+    }
+}
+.projects {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+
+    .item {
+        display: block;
+        width: 30%;
+        border: 2px solid #4F4F4F;
+        padding: 10px;
+        border-radius: 7px;
+        color: white;
+    }
+    .item:hover {
+        background-color: #3D3D3D;
+    }
+    .title {
+        font-size: 1.2rem;
+    }
+    .running {
+        color:  #48c9b0;
+        font-weight: bold;
+    }
+    .stopped {
+        color: #e74c3c;
+        font-weight: bold;
     }
 }
 .hidden {

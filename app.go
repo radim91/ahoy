@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 	"net/http"
+	"os"
 	"radim91/entity"
 )
 
@@ -25,9 +26,12 @@ func projectDetailHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	Project := entity.GetProject(r.PathValue("name"))
+    Data := map[string]interface{} {
+        "Project": entity.GetProject(r.PathValue("name")),
+        "Url": os.Getenv("URL"),
+    }
 
-	tmpl.ExecuteTemplate(w, "base", Project)
+	tmpl.ExecuteTemplate(w, "base", Data)
 }
 
 func containersHandler(w http.ResponseWriter, r *http.Request) {

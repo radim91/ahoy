@@ -1,10 +1,18 @@
 {{define "content"}}
 <h2>Projects</h2>
-<p>
+<div class="projects">
     {{range .}}
-    <a href="/projects/{{.Name}}">{{.Name}}</a>{{if eq .Running true}} - running{{end}}<br/>
+    <div class="item">
+        <a class="title" href="/projects/{{.Name}}">{{.Name}}</a><br/>
+        status: 
+        {{if eq .Running true}}
+            <span class="running">running</span>
+        {{else}}
+            <span class="stopped">stopped</span>
+        {{end}}<br/>
+    </div>
     {{end}}
-</p>
+</div>
 {{end}}
 
 {{define "scripts"}}

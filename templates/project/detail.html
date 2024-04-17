@@ -1,10 +1,10 @@
 {{define "content"}}
 <h2>Project {{.Name}}</h2>
 <p>
-    Name: {{.Name}}<br/>
-    Hash: {{.Hash}}<br/>
-    File: {{.File}}<br/>
-    Workdir: {{.Workdir}}<br/>
+    Name: {{.Project.Name}}<br/>
+    Hash: {{.Project.Hash}}<br/>
+    File: {{.Project.File}}<br/>
+    Workdir: {{.Project.Workdir}}<br/>
 </p>
 <div>
     <button id="start">START</button>
@@ -25,7 +25,7 @@
     let status = 'STOPPED';
 
     document.addEventListener("DOMContentLoaded", function() {
-        const socket = new WebSocket("ws://localhost:8080/api/project/status/{{.Name}}")
+        const socket = new WebSocket("ws://{{.Url}}/api/project/status/{{.Project.Name}}")
 
         socket.onopen = function () {
             console.log("Connected!");
@@ -68,7 +68,7 @@
         }
 
         start.addEventListener("click", function() {
-            fetch("/api/project/start/{{.Name}}")
+            fetch("/api/project/start/{{.Project.Name}}")
                 .then(response => response.json())
                 .then(data => {
                     status = 'STARTING';
@@ -76,7 +76,7 @@
         });
 
         stop.addEventListener("click", function() {
-            fetch("/api/project/stop/{{.Name}}")
+            fetch("/api/project/stop/{{.Project.Name}}")
                 .then(response => response.json())
                 .then(data => {
                     status = 'STOPPING';
@@ -84,7 +84,7 @@
         });
 
         restart.addEventListener("click", function() {
-            fetch("/api/project/restart/{{.Name}}")
+            fetch("/api/project/restart/{{.Project.Name}}")
                 .then(response => response.json())
                 .then(data => {
                     status = 'RESTARTING';
@@ -92,7 +92,7 @@
         });
 
         down.addEventListener("click", function() {
-            fetch("/api/project/down/{{.Name}}")
+            fetch("/api/project/down/{{.Project.Name}}")
                 .then(response => response.json())
                 .then(data => {
                     status = 'DOWN';

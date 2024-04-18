@@ -46,7 +46,7 @@
             statusElement.innerHTML = "STATUS: " + status;
 
             if (parsedData.length > 0 && status !== 'STOPPING') {
-                statusElement.innerHTML = "";
+                let html = "<table width='100%'><tr><td>Container</td><td>Ports</td><td>Status</td></tr>";
 
                 stop.classList.remove("hidden");
                 restart.classList.remove("hidden");
@@ -54,16 +54,13 @@
                 start.classList.add("hidden");
 
                 parsedData.forEach(function(line) {
-                    const link = document.createElement('a');
-                    link.href = `/containers/${line.ID}`;
-                    link.innerHTML = `${line.Name}`;
-                    
-                    if (!statusElement.contains(link)) {
-                        statusElement.appendChild(link); 
-                    }
-
-                    statusElement.innerHTML += ' ' + line.Status + "<br/>";
+                    html += `<tr><td><a href="/containers/${line.ID}">${line.Name}</a></td>`;
+                    html += `<td>${line.Ports}</td>`;
+                    html += `<td>${line.Status}</td></tr>`
                 });
+
+                html += "</table>";
+                statusElement.innerHTML = html;
             } 
         }
 

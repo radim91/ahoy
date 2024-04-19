@@ -1,12 +1,22 @@
+:root {
+    --green: #48c9b0;
+    --green-dark: #398677;
+    --red: #e74c3c;
+    --red-dark: #c0392b;
+    --orange: #ff894c; 
+    --orange-dark: #bb5d2c;
+    --blue: #7dace4;
+    --blue-dark: #5f8dbf;
+    --lightgray: #4F4F4F;
+    --gray: #3D3D3D;
+}
 @font-face {
     font-family: "Fragment Mono";
     src: url('/assets/FragmentMono.woff2');
 }
-
 html {
     font-family: "Fragment Mono";
 }
-
 body {
     background-color: #333333;
     color: white;
@@ -17,6 +27,19 @@ a {
 }
 a:hover {
     text-decoration: underline;
+}
+button {
+    background-color: var(--lightgray);
+    color: white;
+    font-weight: bold;
+    border: 0px;
+    border-radius: 7px;
+    padding: 10px;
+}
+
+button:hover {
+    background-color: var(--gray);
+    cursor: pointer;
 }
 .container {
     display: flex;
@@ -67,11 +90,11 @@ a:hover {
         font-size: 1.2rem;
     }
     .running {
-        color:  #48c9b0;
+        color: var(--green);
         font-weight: bold;
     }
     .stopped {
-        color: #e74c3c;
+        color: var(--red);
         font-weight: bold;
     }
 }
@@ -92,4 +115,28 @@ a:hover {
     overflow: auto;
     display: flex;
     flex-direction: column-reverse;
+}
+#start {
+    background-color: var(--green);
+}
+#stop {
+    background-color: var(--red);
+}
+#restart {
+    background-color: var(--orange);
+}
+#down {
+    background-color: var(--blue);
+}
+#start:hover {
+    background-color: var(--green-dark);
+}
+#stop:hover {
+    background-color: var(--red-dark);
+}
+#restart:hover {
+    background-color: var(--orange-dark);
+}
+#down:hover {
+    background-color: var(--blue-dark);
 }

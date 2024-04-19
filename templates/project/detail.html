@@ -1,5 +1,5 @@
 {{define "content"}}
-<h2>Project {{.Name}}</h2>
+<h2>Project {{.Project.Name}}</h2>
 <p>
     Name: {{.Project.Name}}<br/>
     Hash: {{.Project.Hash}}<br/>
@@ -46,7 +46,7 @@
             statusElement.innerHTML = "STATUS: " + status;
 
             if (parsedData.length > 0 && status !== 'STOPPING') {
-                let html = "<table width='100%'><tr><td>Container</td><td>Ports</td><td>Status</td></tr>";
+                let html = "<table width='100%'><tr><td><strong>Container</strong></td><td><strong>Ports</strong></td><td><strong>Status</strong></td></tr>";
 
                 stop.classList.remove("hidden");
                 restart.classList.remove("hidden");

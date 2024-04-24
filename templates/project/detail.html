@@ -1,18 +1,27 @@
 {{define "content"}}
 <h2>Project {{.Project.Name}}</h2>
-<p>
-    Name: {{.Project.Name}}<br/>
-    Hash: {{.Project.Hash}}<br/>
-    File: {{.Project.File}}<br/>
-    Workdir: {{.Project.Workdir}}<br/>
-</p>
-<div>
+<div class="mt-1">
     <button id="start">START</button>
     <button id="stop" class="hidden">STOP</button>
     <button id="restart" class="hidden">RESTART</button>
     <button id="down" class="hidden">DOWN</button>
 </div>
-<div id="status" class="mt-1">CHECKING STATUS</div>
+<div id="status" class="mt-1 border">CHECKING STATUS</div>
+<div class="mt-2">
+    <h3>Details</h3>
+    <div class="flex gap-1">
+        <div class="w-200">Name:</div><div>{{.Project.Name}}</div>
+    </div>
+    <div class="flex gap-1 mt-05">
+        <div class="w-200">Hash:</div><div>{{.Project.Hash}}</div>
+    </div>
+    <div class="flex gap-1 mt-05">
+        <div class="w-200">File:</div><div id="project-files">{{.Project.File}}</div>
+    </div>
+    <div class="flex gap-1 mt-05">
+        <div class="w-200">Workdir:</div><div>{{.Project.Workdir}}</div>
+    </div>
+</div>
 {{end}}
 
 {{define "scripts"}}
@@ -95,6 +104,16 @@
                     status = 'DOWN';
                 });
         });
+
+        const projectFiles = document.getElementById("project-files");
+        if (projectFiles) {
+            let html = "";
+            projectFiles.innerHTML.split(",").forEach((file) => {
+                html += `${file}<br/>`;
+            });
+
+            projectFiles.innerHTML = html;
+        }
     });
 </script>
 {{end}}

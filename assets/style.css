@@ -36,10 +36,14 @@ button {
     border-radius: 7px;
     padding: 10px;
 }
-
 button:hover {
     background-color: var(--gray);
     cursor: pointer;
+}
+.border {
+    border: 2px solid var(--lightgray);
+    border-radius: 7px;
+    padding: 5px;
 }
 .container {
     display: flex;
@@ -49,6 +53,12 @@ button:hover {
 .content {
     padding-left: 4rem;
     width: 100%;
+}
+.flex {
+    display: flex;
+}
+.gap-1 {
+    gap: 1rem;
 }
 .menu {
     min-width: 200px;
@@ -98,13 +108,21 @@ button:hover {
         font-weight: bold;
     }
 }
+.w-200 {
+    min-width: 200px !important;
+}
 .hidden {
     display: none;
+}
+.mt-05 {
+    margin-top: 0.5rem;
 }
 .mt-1 {
     margin-top: 1rem;
 }
-
+.mt-2 {
+    margin-top: 2rem;
+}
 #logs {
     font-weight: bold;
     background-color: #000000;

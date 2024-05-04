@@ -1,10 +1,10 @@
 {{define "content"}}
 <h2>Containers</h2>
-<p>
+<ol>
     {{range .}}
-        <a href="/containers/{{.ID}}">{{.Names}}</a>: {{.Image}}<br/>
+        <li><a href="/containers/{{.ID}}" class="container-name">{{index .Names 0}}</a>: {{.Image}}</li>
     {{end}}
-</p>
+</ol>
 {{end}}
 
 {{define "scripts"}}

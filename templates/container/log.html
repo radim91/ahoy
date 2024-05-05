@@ -6,8 +6,9 @@
 {{define "scripts"}}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        console.log({{.}});
         const logs = document.getElementById("logs");
-        const socket = new WebSocket("ws://localhost:8080/api/container/logs/{{.}}")
+        const socket = new WebSocket("ws://localhost:8080/api/container/logs/{{.Id}}")
 
         socket.onopen = function () {
             console.log("Connected!");

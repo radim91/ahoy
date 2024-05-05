@@ -143,5 +143,7 @@ func containerLogsHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	tmpl.ExecuteTemplate(w, "base", r.PathValue("id"))
+    Container := entity.GetContainer(r.PathValue("id"))
+
+	tmpl.ExecuteTemplate(w, "base", Container)
 }

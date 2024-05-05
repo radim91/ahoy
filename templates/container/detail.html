@@ -1,13 +1,45 @@
 {{define "content"}}
-<h2>Container</h2>
-<a href="/containers/{{.ID}}/logs">Logs</a>
-<p>
-    {{.ID}}: {{.Name}} status: <span id="status">CHECKING STATUS</span>
-</p>
-<div>
+<h2>Container {{.Name}}</h2>
+<div class="hidden" id="buttons">
     <button id="start">START</button>
     <button id="stop">STOP</button>
     <button id="remove">REMOVE</button>
+</div>
+<div id="status" class="mt-1 border">CHECKING STATUS</div>
+<div class="mt-2">
+    <h3>Details</h3>
+    <div class="flex gap-1">
+        <div class="w-200">Id:</div><div>{{.ID}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Name:</div><div>{{.Name}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Created:</div><div>{{.Created}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Image:</div><div>{{.Image}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Args:</div><div>{{.Args}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Platform:</div><div>{{.Platform}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Driver:</div><div>{{.Driver}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Networks:</div>
+        <div>
+            {{range $k, $v := .NetworkSettings.Networks}}
+            <a href="/networks/{{$v.NetworkID}}">{{$k}}</a>
+            {{end}}
+        </div>
+    </div>
+    <div class="mt-1">
+        <a href="/containers/{{.ID}}/logs">View Logs</a>
+    </div>
 </div>
 {{end}}
 
@@ -59,6 +91,8 @@
             const parsedData = JSON.parse(event.data);
             const statusElement = document.getElementById("status");
             const status = parsedData.State.Running ? "RUNNING" : "STOPPED";
+
+            document.getElementById("buttons").classList.remove("hidden");
 
             if (status === "RUNNING") {
                 start.classList.add("hidden");

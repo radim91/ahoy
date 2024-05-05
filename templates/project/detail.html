@@ -1,7 +1,7 @@
 {{define "content"}}
 <h2>Project {{.Project.Name}}</h2>
 <div class="mt-1">
-    <button id="start">START</button>
+    <button id="start" class="hidden">START</button>
     <button id="stop" class="hidden">STOP</button>
     <button id="restart" class="hidden">RESTART</button>
     <button id="down" class="hidden">DOWN</button>
@@ -50,6 +50,10 @@
                 restart.classList.toggle("hidden");
                 down.classList.toggle("hidden");
                 start.classList.toggle("hidden");
+            }
+
+            if (status === 'STOPPED') {
+                start.classList.remove("hidden");
             }
 
             statusElement.innerHTML = "STATUS: " + status;

@@ -25,6 +25,7 @@ func main() {
 
 	mux.HandleFunc("/containers/{id}", containerDetailHandler)
 	mux.HandleFunc("/containers/{id}/logs", containerLogsHandler)
+	mux.HandleFunc("/containers/{id}/stats", containerStatsHandler)
 	mux.HandleFunc("/images/{id}", imageDetailHandler)
 	mux.HandleFunc("/projects/{name}", projectDetailHandler)
 	mux.HandleFunc("/networks/{id}", networkDetailHandler)
@@ -34,6 +35,7 @@ func main() {
 	mux.HandleFunc("/api/container/start/{id}", apiContainerStartHandler)
 	mux.HandleFunc("/api/container/stop/{id}", apiContainerStopHandler)
 	mux.HandleFunc("/api/container/logs/{id}", apiContainerLogsHandler)
+	mux.HandleFunc("/api/container/stats/{id}", apiContainerStatsHandler)
 	mux.HandleFunc("/api/container/status/{id}", apiContainerStatusHandler)
 	mux.HandleFunc("/api/container/remove/{id}", apiContainerRemoveHandler)
 	mux.HandleFunc("/api/image/remove/{id}", apiImageRemoveHandler)

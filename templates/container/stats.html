@@ -1,0 +1,23 @@
+{{define "content"}}
+<h2>Stats - <a href="/containers/{{.Container.ID}}">{{.Container.Name}}</a></h2>
+{{end}}
+
+{{define "scripts"}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const socket = new WebSocket(`ws://{{.Url}}/api/container/stats/{{.Container.ID}}`);
+
+        socket.onopen = function () {
+            console.log("Connected!");
+        }
+
+        socket.onmessage = function (event) {
+            const parsedData = JSON.parse(event.data);
+
+            for (const [key, value] of Object.entries(parsedData)) {
+               console.log(JSON.parse(value).cpu_stats.cpu_usage.total_usage); 
+            }
+        }
+    });
+</script>
+{{end}}

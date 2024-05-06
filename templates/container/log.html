@@ -1,14 +1,14 @@
 {{define "content"}}
-<h2>Container logs</h2>
-<div id="logs">LOADING LOGS</div>
+<h2>Logs - <a href="/containers/{{.Container.ID}}">{{.Container.Name}}</a></h2>
+<small>for last 24 hours</small>
+<div id="logs" class="mt-1">LOADING LOGS</div>
 {{end}}
 
 {{define "scripts"}}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        console.log({{.}});
         const logs = document.getElementById("logs");
-        const socket = new WebSocket("ws://localhost:8080/api/container/logs/{{.Id}}")
+        const socket = new WebSocket(`ws://{{.Url}}/api/container/logs/{{.Container.ID}}`);
 
         socket.onopen = function () {
             console.log("Connected!");

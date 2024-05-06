@@ -143,7 +143,25 @@ func containerLogsHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-    Container := entity.GetContainer(r.PathValue("id"))
+    data := map[string]interface{} {
+        "Container": entity.GetContainer(r.PathValue("id")),
+        "Url": os.Getenv("URL"),
+    }
 
-	tmpl.ExecuteTemplate(w, "base", Container)
+	tmpl.ExecuteTemplate(w, "base", data)
+}
+
+func containerStatsHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.New("").ParseFiles("templates/container/stats.html", "templates/base.html")
+
+	if err != nil {
+		panic(err)
+	}
+
+    data := map[string]interface{} {
+        "Container": entity.GetContainer(r.PathValue("id")),
+        "Url": os.Getenv("URL"),
+    }
+
+	tmpl.ExecuteTemplate(w, "base", data)
 }

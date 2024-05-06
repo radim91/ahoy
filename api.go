@@ -89,6 +89,29 @@ func apiContainerLogsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func apiContainerStatsHandler(w http.ResponseWriter, r *http.Request) {
+    conn, err := upgrader.Upgrade(w, r, nil)
+    if err != nil {
+        log.Print("upgrade failed: ", err)
+        return
+    }
+
+    defer conn.Close()
+
+    for {
+        time.Sleep(1 * time.Second)
+        stats := entity.GetContainerStats(r.PathValue("id"))
+        jsonData, _ := json.Marshal(stats)
+        err := conn.WriteMessage(websocket.TextMessage, jsonData)
+
+        if err != nil {
+            fmt.Println(err)
+
+            break
+        }
+    }
+}
+
 func apiContainerRemoveHandler(w http.ResponseWriter, r *http.Request) {
 	entity.RemoveContainer(r.PathValue("id"))
 

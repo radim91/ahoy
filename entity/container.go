@@ -56,6 +56,21 @@ func GetContainerLogs(id string) []string {
 	return logsSlice
 }
 
+func GetContainerStats(id string) []string {
+	client := GetClient()
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	stats, _ := client.ContainerStats(ctx, id, false)
+
+	var statsSlice []string
+
+	scanner := bufio.NewScanner(stats.Body)
+	for scanner.Scan() {
+		statsSlice = append(statsSlice, scanner.Text())
+	}
+
+	return statsSlice
+}
+
 func RemoveContainer(id string) {
 	client := GetClient()
 	err := client.ContainerRemove(context.Background(), id, types.ContainerRemoveOptions{

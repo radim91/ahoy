@@ -126,6 +126,10 @@ button:hover {
 .-mt-1 {
     margin-top: -1rem;
 }
+.stats-wrapper {
+    width: 1000px;
+    height: 500px;
+}
 #logs {
     font-weight: bold;
     background-color: #000000;

@@ -1,7 +1,8 @@
 {{define "content"}}
 <h2>Stats - <a href="/containers/{{.Container.ID}}">{{.Container.Name}}</a></h2>
 <div class="stats-wrapper">
-    <canvas id="stats-chart"></canvas>
+    <canvas id="stats-cpu"></canvas>
+    <canvas id="stats-mem"></canvas>
 </div>
 {{end}}
 
@@ -15,23 +16,59 @@
             console.log("Connected!");
         }
 
-        const data = [
-            { time: 0, usage: 0 },
+        const cpuData = [
+            { time: 0, usage: 0.00 },
         ];
-        const ctx = document.getElementById("stats-chart").getContext('2d');
-        ctx.canvas.width = 1000;
-        ctx.canvas.height = 500;
 
-        const chart = new Chart(ctx, {
+        const memData = [
+            { time: 0, usage: 0.00 },
+        ];
+
+        const cpuCtx = document.getElementById("stats-cpu").getContext('2d');
+        cpuCtx.canvas.width = 1000;
+        cpuCtx.canvas.height = 500;
+
+        const cpuChart = new Chart(cpuCtx, {
             type: 'line',
             data: {
-                labels: data.map(row => row.time),
+                labels: cpuData.map(row => row.time),
                 datasets: [{
-                    label: 'Cpu usage',
-                    data: data.map(row => row.usage),
+                    label: 'CPU usage %',
+                    data: cpuData.map(row => row.usage),
                 }]
-            }
+            },
+            options: {
+                animation: false,
+                layout: {
+                    padding: 20,
+                }
+            },
         });
+
+        const memCtx = document.getElementById("stats-mem").getContext('2d');
+        memCtx.canvas.width = 1000;
+        memCtx.canvas.height = 500;
+
+        const memChart = new Chart(memCtx, {
+            type: 'line',
+            data: {
+                labels: memData.map(row => row.time),
+                datasets: [{
+                    label: 'MEM usage %',
+                    data: memData.map(row => row.usage),
+                    borderColor: 'red',
+                    backgroundColor: 'pink',
+                }]
+            },
+            options: {
+                animation: false,
+                layout: {
+                    padding: 20,
+                }
+            },
+        });
+
+        Chart.defaults.color = '#FFFFFF';
 
         socket.onmessage = function (event) {
             const parsedData = JSON.parse(event.data);
@@ -39,17 +76,36 @@
             for (let [key, value] of Object.entries(parsedData)) {
                 value = JSON.parse(value);
 
-                if (chart.data.labels.length > 10) {
-                    chart.data.labels.shift();
-                    chart.data.datasets.forEach((dataset) => dataset.data.shift());
+                if (cpuChart.data.labels.length > 10) {
+                    cpuChart.data.labels.shift();
+                    cpuChart.data.datasets.forEach((dataset) => dataset.data.shift());
                 }
 
-                chart.data.labels.push(value.read);
-                chart.data.datasets.forEach((dataset) => {
-                    const usage = value.cpu_stats.cpu_usage.total_usage/value.cpu_stats.system_cpu_usage; 
-                    dataset.data.push(usage*100)});
+                cpuChart.data.labels.push(new Date(value.read).toLocaleTimeString());
+                cpuChart.data.datasets.forEach((dataset) => {
+                    const cpuDelta = value.cpu_stats.cpu_usage.total_usage - value.precpu_stats.cpu_usage.total_usage;
+                    const systemCpuDelta = value.cpu_stats.system_cpu_usage - value.precpu_stats.system_cpu_usage;
+                    const cpuNumber = value.cpu_stats.online_cpus;
+                    const usage = (cpuDelta / systemCpuDelta * cpuNumber * 100).toFixed(2);
 
-                chart.update();
+                    dataset.data.push(usage)});
+
+                cpuChart.update();
+
+                if (memChart.data.labels.length > 10) {
+                    memChart.data.labels.shift();
+                    memChart.data.datasets.forEach((dataset) => dataset.data.shift());
+                }
+
+                memChart.data.labels.push(new Date(value.read).toLocaleTimeString());
+                memChart.data.datasets.forEach((dataset) => {
+                    const usedMemory = value.memory_stats.usage;
+                    const availMemory = value.memory_stats.limit;
+                    const usage = ((usedMemory / availMemory) * 100).toFixed(2);
+
+                    dataset.data.push(usage)});
+
+                memChart.update();
             }
         }
 

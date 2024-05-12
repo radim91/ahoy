@@ -9,15 +9,19 @@
 </head>
 <body>
     <div class="container">
-        <div>
-            <img src="/assets/logo.png" class="logo-panel" width="100" />
-        </div>
-        <div class="menu">
-            <a href="/" class="item">Projects</a>
-            <a href="/containers" class="item">Containers</a>
-            <a href="/images" class="item">Images</a>
-            <a href="/networks" class="item">Networks</a>
-            <a href="/volumes" class="item">Volumes</a>
+        <div class="left-panel">
+            <div class="logo">
+                <img src="/assets/logo.png" class="logo-panel" width="100" />
+                <h3>Ahoy</h3>
+                <small class="subheading">docker management<br/>in browser</small>
+            </div>
+            <div class="menu">
+                <a href="/" class="item">Projects</a>
+                <a href="/containers" class="item">Containers</a>
+                <a href="/images" class="item">Images</a>
+                <a href="/networks" class="item">Networks</a>
+                <a href="/volumes" class="item">Volumes</a>
+            </div>
         </div>
         <div class="content">
             {{template "content" .}} 

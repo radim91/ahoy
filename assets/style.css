@@ -108,6 +108,11 @@ button:hover {
         font-weight: bold;
     }
 }
+.logo-panel {
+    width: 100px !important;
+    height: auto;
+    margin-bottom: 30px;
+}
 .w-200 {
     min-width: 200px !important;
 }

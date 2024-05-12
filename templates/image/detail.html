@@ -1,26 +1,30 @@
 {{define "content"}}
 <h2>Image detail</h2>
-<p>
-    ID: {{.ID}}<br/>
-    RepoTags: {{.RepoTags}}<br/>
-    RepoDigests: {{.RepoDigests}}<br/>
-    Created: {{.Created}}<br/>
-    Size: {{.Size}}<br/>
-    VirtualSize: {{.VirtualSize}}<br/>
-    Parent: {{.Parent}}<br/>
-    DockerVersion: {{.DockerVersion}}<br/>
-    Author: {{.Author}}<br/>
-    Os: {{.Os}}<br/>
-    OsVersion: {{.OsVersion}}<br/>
-    Architecture: {{.Architecture}}<br/>
-    Config: {{.Config}}<br/>
-    Container: {{.Container}}<br/>
-    ContainerConfig: {{.ContainerConfig}}<br/>
-    RootFS: {{.RootFS}}<br/>
-    Metadata: {{.Metadata}}<br/>
-</p>
 <div>
     <button id="remove">REMOVE</button>
+</div>
+<div class="mt-2">
+    <div class="flex gap-1">
+        <div class="w-200">Id:</div><div>{{.ID}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Repo Tags:</div><div>{{.RepoTags}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Created:</div><div>{{.Created}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Size:</div><div>{{.Size}} bytes</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Virtual Size:</div><div>{{.VirtualSize}} bytes</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">OS:</div><div>{{.Os}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Architecture:</div><div>{{.Architecture}}</div>
+    </div>
 </div>
 {{end}}
 

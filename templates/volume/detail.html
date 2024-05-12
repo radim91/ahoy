@@ -1,13 +1,19 @@
 {{define "content"}}
 <h2>Volume</h2>
-<p>
-    Name: {{.Name}}<br/>
-    Driver: {{.Driver}}<br/>
-    Mountpoint: {{.Mountpoint}}<br/>
-</p>
 <div>
     <button id="remove">REMOVE</button>
 </div>
+<div class="mt-2">
+    <div class="flex gap-1">
+        <div class="w-200">Name:</div><div>{{.Name}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Driver:</div><div>{{.Driver}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Mountpoint:</div><div>{{.Mountpoint}}</div>
+    </div>
+</p>
 {{end}}
 
 {{define "scripts"}}

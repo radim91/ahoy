@@ -1,31 +1,59 @@
 {{define "content"}}
 <h2>Network</h2>
-<p>
-    {{.Network.ID}}: {{.Network.Name}}<br/>
-    IPAM: {{.Network.IPAM}}<br/>
-    Driver: {{.Network.Driver}}<br/>
-    Scope: {{.Network.Scope}}<br/>
-    Labels: {{.Network.Labels}}<br/>
-    Internal: {{.Network.Internal}}<br/>
-</p>
-<div>
+<div class="mt-2">
+    <div class="flex gap-1">
+        <div class="w-200">Id:</div><div>{{.Network.ID}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Name:</div><div>{{.Network.Name}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">IPAM:</div>
+        <div>
+            {{range .Network.IPAM.Config}}
+                Subnet - {{.Subnet}}<br/>
+                Gateway - {{.Gateway}}
+            {{end}}
+        </div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Driver:</div><div>{{.Network.Driver}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Scope:</div><div>{{.Network.Scope}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Internal:</div><div>{{.Network.Internal}}</div>
+    </div>
+    <div class="flex gap-1">
+        <div class="w-200">Labels:</div>
+        <div>
+            {{range $k, $v := .Network.Labels}}
+            {{$k}}: {{$v}}<br/>
+            {{end}}
+        </div>
+    </div>
+</div>
+<div class="mt-1">
     Containers:<br/>
     {{range $id, $networkContainer := .Network.Containers}}
         <a href="/containers/{{$id}}">{{$networkContainer.Name}}</a> - {{$networkContainer.IPv4Address}}<br/>
     {{end}}
 </div>
 <br/>
-<div>
-    <label>Connect container:</label>
-    <select id="container">
-        {{range $container := .Containers}}
-            {{if eq $container.State "running"}}
-                <option value="{{$container.ID}}">{{$container.Names}}</option>
+<div class="mt-1">
+    <div>Connect container:</div>
+    <div class="mt-1">
+        <select id="container">
+            {{range $container := .Containers}}
+                {{if eq $container.State "running"}}
+                    <option value="{{$container.ID}}">{{$container.Names}}</option>
+                {{end}}
             {{end}}
-        {{end}}
-    </select>
-    <button id="connect">CONNECT</button>
-    <button id="disconnect">DISCONNECT</button>
+        </select>
+        <button id="connect">CONNECT</button>
+        <button id="disconnect">DISCONNECT</button>
+    </div>
 </div>
 {{end}}
 

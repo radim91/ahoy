@@ -8,7 +8,7 @@ import (
 )
 
 func projectsHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/project/list.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/project/list.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -20,7 +20,7 @@ func projectsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func projectDetailHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/project/detail.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/project/detail.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -35,7 +35,7 @@ func projectDetailHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func containersHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/container/list.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/container/list.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -47,7 +47,7 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func imagesHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/image/list.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/image/list.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -59,7 +59,7 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func imageDetailHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/image/detail.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/image/detail.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -71,7 +71,7 @@ func imageDetailHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func networksHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/network/list.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/network/list.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -83,7 +83,7 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func networkDetailHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/network/detail.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/network/detail.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -101,7 +101,7 @@ func networkDetailHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func volumesHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/volume/list.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/volume/list.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -113,7 +113,7 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func volumeDetailHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/volume/detail.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/volume/detail.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -125,7 +125,7 @@ func volumeDetailHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func containerDetailHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/container/detail.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/container/detail.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -137,7 +137,7 @@ func containerDetailHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func containerLogsHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/container/log.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/container/log.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)
@@ -152,7 +152,7 @@ func containerLogsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func containerStatsHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("").ParseFiles("templates/container/stats.html", "templates/base.html")
+	tmpl, err := template.ParseFS(files, "templates/container/stats.html", "templates/base.html")
 
 	if err != nil {
 		panic(err)

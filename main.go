@@ -1,15 +1,25 @@
 package main
 
 import (
+	"embed"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/joho/godotenv"
+)
+
+var (
+    //go:embed templates/*
+    files embed.FS
+    //go:embed assets/*
+    assets embed.FS
 )
 
 func init() {
     err := godotenv.Load(".env")
     if err != nil {
-        panic(err)
+        os.Setenv("URL", "localhost:8080")
     }
 }
 
@@ -49,7 +59,8 @@ func main() {
 	mux.HandleFunc("POST /api/network/disconnect", apiNetworkRemoveContainerHandler)
 
 	// FS
-	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
+	mux.Handle("/assets/", http.FileServer(http.FS(assets)))
 
-	http.ListenAndServe(":8080", mux)
+    fmt.Println("Listening on " + os.Getenv("URL"))
+	http.ListenAndServe(os.Getenv("URL"), mux)
 }

@@ -131,9 +131,12 @@ func containerDetailHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	Container := entity.GetContainer(r.PathValue("id"))
+    Data := map[string]interface{} {
+        "Container": entity.GetContainer(r.PathValue("id")),
+        "Url": os.Getenv("URL"),
+    }
 
-	tmpl.ExecuteTemplate(w, "base", Container)
+	tmpl.ExecuteTemplate(w, "base", Data)
 }
 
 func containerLogsHandler(w http.ResponseWriter, r *http.Request) {

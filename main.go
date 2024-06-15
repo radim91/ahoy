@@ -10,17 +10,17 @@ import (
 )
 
 var (
-    //go:embed templates/*
-    files embed.FS
-    //go:embed assets/*
-    assets embed.FS
+	//go:embed templates/*
+	files embed.FS
+	//go:embed assets/*
+	assets embed.FS
 )
 
 func init() {
-    err := godotenv.Load(".env")
-    if err != nil {
-        os.Setenv("URL", "localhost:8080")
-    }
+	err := godotenv.Load(".env")
+	if err != nil {
+		os.Setenv("URL", "localhost:8080")
+	}
 }
 
 func main() {
@@ -54,13 +54,13 @@ func main() {
 	mux.HandleFunc("/api/project/restart/{name}", apiProjectRestartHandler)
 	mux.HandleFunc("/api/project/down/{name}", apiProjectDownHandler)
 	mux.HandleFunc("/api/project/status/{name}", apiProjectStatusHandler)
-    mux.HandleFunc("/api/volume/remove/{name}", apiVolumeRemoveHandler)
+	mux.HandleFunc("/api/volume/remove/{name}", apiVolumeRemoveHandler)
 	mux.HandleFunc("POST /api/network/connect", apiNetworkAddContainerHandler)
 	mux.HandleFunc("POST /api/network/disconnect", apiNetworkRemoveContainerHandler)
 
 	// FS
 	mux.Handle("/assets/", http.FileServer(http.FS(assets)))
 
-    fmt.Println("Listening on " + os.Getenv("URL"))
+	fmt.Println("Listening on " + os.Getenv("URL"))
 	http.ListenAndServe(os.Getenv("URL"), mux)
 }

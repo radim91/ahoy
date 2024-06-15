@@ -9,25 +9,25 @@
 <div class="mt-2">
     <h3>Details</h3>
     <div class="flex gap-1">
-        <div class="w-200">Id:</div><div>{{.ID}}</div>
+        <div class="w-200">Id:</div><div>{{.Container.ID}}</div>
     </div>
     <div class="flex gap-1">
-        <div class="w-200">Name:</div><div>{{.Name}}</div>
+        <div class="w-200">Name:</div><div>{{.Container.Name}}</div>
     </div>
     <div class="flex gap-1">
-        <div class="w-200">Created:</div><div>{{.Created}}</div>
+        <div class="w-200">Created:</div><div>{{.Container.Created}}</div>
     </div>
     <div class="flex gap-1">
-        <div class="w-200">Image:</div><div>{{.Image}}</div>
+        <div class="w-200">Image:</div><div>{{.Container.Image}}</div>
     </div>
     <div class="flex gap-1">
-        <div class="w-200">Args:</div><div>{{.Args}}</div>
+        <div class="w-200">Args:</div><div>{{.Container.Args}}</div>
     </div>
     <div class="flex gap-1">
-        <div class="w-200">Platform:</div><div>{{.Platform}}</div>
+        <div class="w-200">Platform:</div><div>{{.Container.Platform}}</div>
     </div>
     <div class="flex gap-1">
-        <div class="w-200">Driver:</div><div>{{.Driver}}</div>
+        <div class="w-200">Driver:</div><div>{{.Container.Driver}}</div>
     </div>
     <div class="flex gap-1">
         <div class="w-200">Networks:</div>
@@ -38,8 +38,8 @@
         </div>
     </div>
     <div class="mt-2">
-        <a href="/containers/{{.ID}}/logs">View Logs</a> | 
-        <a href="/containers/{{.ID}}/stats">View Stats</a>
+        <a href="/containers/{{.Container.ID}}/logs">View Logs</a> | 
+        <a href="/containers/{{.Container.ID}}/stats">View Stats</a>
     </div>
 </div>
 {{end}}
@@ -52,7 +52,7 @@
         const stop = document.getElementById("stop");
 
         remove.addEventListener("click", function() {
-            fetch("/api/container/remove/{{.ID}}")
+            fetch("/api/container/remove/{{.Container.ID}}")
                 .then(response => response.json())
                 .then(data => {
                     remove.innerHTML = "REMOVING...";
@@ -65,7 +65,7 @@
         });
 
         start.addEventListener("click", function() {
-            fetch("/api/container/start/{{.ID}}")
+            fetch("/api/container/start/{{.Container.ID}}")
                 .then(response => response.json())
                 .then(data => {
                     start.innerHTML = "STARTING...";
@@ -74,7 +74,7 @@
         })
 
         stop.addEventListener("click", function() {
-            fetch("/api/container/stop/{{.ID}}")
+            fetch("/api/container/stop/{{.Container.ID}}")
                 .then(response => response.json())
                 .then(data => {
                     stop.innerHTML = "STOPPING...";
@@ -82,7 +82,7 @@
                 });
         })
         
-        const socket = new WebSocket("ws://localhost:8080/api/container/status/{{.ID}}")
+        const socket = new WebSocket("ws://{{.Url}}/api/container/status/{{.Container.ID}}")
 
         socket.onopen = function () {
             console.log("Connected!");

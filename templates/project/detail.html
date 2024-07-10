@@ -21,6 +21,13 @@
     <div class="flex gap-1 mt-05">
         <div class="w-200">Workdir:</div><div>{{.Project.Workdir}}</div>
     </div>
+    <div class="flex gap-1 mt-05">
+        <div class="w-200">Networks:</div><div>
+            {{range $ntw := .Project.Networks}}
+            <a href="/networks/{{$ntw.NetworkID}}">{{$ntw.NetworkID}}</a>
+            {{end}}
+        </div>
+    </div>
 </div>
 {{end}}
 

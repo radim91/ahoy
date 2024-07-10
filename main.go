@@ -36,6 +36,7 @@ func main() {
 	mux.HandleFunc("/containers/{id}", containerDetailHandler)
 	mux.HandleFunc("/containers/{id}/logs", containerLogsHandler)
 	mux.HandleFunc("/containers/{id}/stats", containerStatsHandler)
+	mux.HandleFunc("/containers/{id}/terminal", containerTerminalHandler)
 	mux.HandleFunc("/images/{id}", imageDetailHandler)
 	mux.HandleFunc("/projects/{name}", projectDetailHandler)
 	mux.HandleFunc("/networks/{id}", networkDetailHandler)

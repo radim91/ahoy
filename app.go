@@ -168,3 +168,18 @@ func containerStatsHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl.ExecuteTemplate(w, "base", data)
 }
+
+func containerTerminalHandler(w http.ResponseWriter, r *http.Request) {
+    tmpl, err := template.ParseFS(files, "templates/container/terminal.html", "templates/base.html")
+
+    if err != nil {
+        panic(err)
+    }
+
+    data := map[string]interface{} {
+        "Container": entity.GetContainer(r.PathValue("id")),
+        "Url": os.Getenv("URL"),
+    }
+
+    tmpl.ExecuteTemplate(w, "base", data)
+}

@@ -4,6 +4,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/docker/docker/api/types/network"
 )
 
 type Project struct {
@@ -12,7 +14,8 @@ type Project struct {
 	File     string
 	Workdir  string
 	Services []Service
-    Running bool
+	Running  bool
+    Networks map[string]*network.EndpointSettings
 }
 
 type Service struct {
@@ -57,12 +60,13 @@ projectLoop:
 					Services: []Service{
 						service,
 					},
+                    Networks: container.NetworkSettings.Networks,
 				}
 			}
 
-            if container.State == "running" {
-                project.Running = true
-            }
+			if container.State == "running" {
+				project.Running = true
+			}
 
 			projects[project.Name] = project
 		}
